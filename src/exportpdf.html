@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../icon.ico">
+    <title>Stundenplan</title>
+    <link rel="stylesheet" href="../package/fontawesome/css/all.min.css" />
+    <script src="../package/jquery-1.12.4.min.js"></script>
+    <link rel="stylesheet" href="pdfstyle.css">
+    <span><input accept=".json" type="file" id="file" style="display:none;" /></span>
+</head>
+
+<body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&#9664;</a>
+        <div id="mySidenSpan">
+            <a href="index.html" style="position: absolute; left: 10px;">Starte Seite </a>
+            <span onclick="windowsClose()" id="close-btn" style="position: absolute; bottom: 10px; left: 25px;">
+                Beenden
+            </span>
+        </div>
+    </div>
+    <div class="title">
+
+        <header class="header">
+            <span id="nbtn" class="navbtn" onclick="openNav()">&#9776;</span>
+                
+                <div class="section1">
+                    <div style="color: aliceblue;  margin-bottom: 8px;"> FACHSCHAFT DER FAKULTÄT FÜR <input id="fakultaet" type="search" size="30" /></div>
+                
+                    <div style="color: aliceblue;">
+                        Programm der <input id="programmNummer" type="search" style="width: 65px;" size="2" />
+                        <span style="color: aliceblue;" >-Woche 
+                
+                        <select id="sem" style="cursor: pointer;">
+                            <option>Wintersemester</option>
+                            <option>Somersemester</option>
+                        </select>
+                        <input id="semJahr" type="search" min="2020" placeholder="/" size="3" />
+                    </div>
+
+                </div>
+                <button class="btn" onclick="generatePDF()">Speichern</button>
+            
+            <div class="weekControls">
+                <i id="prevWeekBtn" class="fas fa-angle-double-left cursor-pointer"></i>
+                <span id="weekDisplay">
+                    <span id="weekStartDisplay"></span>
+                        ‒
+                    <span id="weekEndDisplay"></span>
+                </span>
+                    <i id="nextWeekBtn" class="fas fa-angle-double-right cursor-pointer"></i>
+            </div>
+        </header>
+
+    </div>
+    <div id="pdfGen">
+            <div class="Logo">
+                <img src="logo2.png" id="logo" onclick="changelogo()">
+            </div>
+            <div class="information">
+                <div>
+                    <span id="FAC">FACHSCHAFT DER FAKULTÄT FÜR </span>
+                    <input id="fakResult" style="font-size: 17px;">
+                </div>
+                
+                <div><span id="PRO">Programm der </span><input id="proResult" style="font-size: 17px;"></input><span id="woche";> Woche</span></div>
+                <div><span></span><input id="semResult" style="font-size: 17px;"></input><input id="semJahrResult" style="font-size: 17px;"></input></div>
+            </div>
+
+            
+            
+            <div class="calender">
+                <main>
+                    <section id="calendar" >
+                        <div class="dayTime"></div>
+                        <div id="uhr">Uhr</div>
+                        <div data-name="Montag" data-dayIndex="0" class="day"></div>
+                        <div data-name="Dienstag" data-dayIndex="1" class="day"></div>
+                        <div data-name="Mittwoch" data-dayIndex="2" class="day"></div>
+                        <div data-name="Donnerstag" data-dayIndex="3" class="day"></div>
+                        <div data-name="Freitag" data-dayIndex="4" class="day"></div>
+                    </section>
+                </main>
+            </div>
+            <div class="bottom-hinweis">
+                <div style="color: #6d005e; font-size: 15px !important;">Hinweis: </div>
+                <div><span id="hinweis"></span></div>
+            </div>
+            <div class="bottom-legende">
+                <div style="color: #6d005e; font-size: 15px !important;">Legende: </div>
+                <div><span id="legende"></span></div>
+            </div>
+            <div>
+                <div id="bottom-date" ><span>erstellt am: </span><span id="date"></span></div>
+            </div>
+           
+    </div>
+
+    <script src="../render.js"></script>
+    <script src="export.js" type="module"></script>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../package/kendo/2016.3.914/kendo.all.min.js"></script>
+    <script src="navigation.js"></script>
+    <script src="../package/bootstrap-3.3.7/dist/js/bootstrap.min.js"></script>
+    <script>
+
+        function changelogo() {
+
+        let displayimg = document.getElementById('logo')
+        if (displayimg.src.match('logo1.png')) {
+            displayimg.src = 'logo2.png'
+
+        } else if (displayimg.src.match('logo2.png')) {
+            displayimg.src = 'logo1.png'
+
+        }  else {
+            displayimg.src = 'logo1.png'
+        }
+        }
+        var generatePDF = function () {
+    // Increase font size for specific elements
+    $("#pdfGen").find("*").css("font-size", "17px");
+
+    kendo.drawing.drawDOM("#pdfGen", {
+        paperSize: ["35cm", "23cm"],
+        margin: "0.1cm",
+        scale: 0.5
+    }).then(function (group) {
+        kendo.drawing.pdf.saveAs(group, "Kalendar.pdf");
+
+        // Reset the font size after generating the PDF
+        $("#pdfGen").find("*").css("font-size", "");
+    });
+}
+
+
+
+
+    </script>
+
+</body>
+
+</html>

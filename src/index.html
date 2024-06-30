@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <link rel="icon" href="../icon.ico">
+  <title>Stundenplan</title>
+  <link rel="stylesheet" href="../package/fontawesome/css/all.min.css" />
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+  <div id="mySidenav" class="sidenav">
+    <span class="closebtn" onclick="closeNav()">&#9664;</span>
+    <div id="mySidenSpan">
+      <span class="import">
+        <label for="file" id="file-input">Importieren</label>
+        <input accept=".json" type="file" id="file" class="js" />
+      </span>
+
+      <span onclick="myDropdown()" class=".sidenav span">Exportieren
+        <div id="myDropdown" class="dropdown-content">
+          <a class="menu" href="exportpdf.html"> &#149 PDF &#187 </a>
+          <a class="menu" href="exporthtml.html"> &#149 HTML &#187 </a>
+        </div>
+      </span>
+      <span id="close-btn" onclick="windowsClose()">
+        Beenden
+      </span>
+    </div>
+  </div>
+  <div class="title">
+    <header class="header">
+      <span id="nbtn" class="navbtn" onclick="openNav()">&#9776;</span>
+      <h1>Stundenplan</h1>
+      <div class="weekControls">
+        <i id="prevWeekBtn" class="fas fa-angle-double-left cursor-pointer"></i>
+        <span id="weekDisplay">
+          <span id="weekStartDisplay"></span>
+          ‒
+          <span id="weekEndDisplay"></span>
+        </span>
+        <i id="nextWeekBtn" class="fas fa-angle-double-right cursor-pointer"></i>
+      </div>
+      <div class="generalControls">
+        <i id="downloadButton" class="fas fa-download"></i>
+        <i id="addButton" class="fas fa-plus" ></i>
+        <i id="trashButton" class="fas fa-trash-alt"></i>
+      </div>
+    </header>
+  </div>
+  <main>
+    <section id="calendar">
+      <div class="dayTime"></div>
+      <div data-name="Montag" data-dayIndex="0" class="day"></div>
+      <div data-name="Dienstag" data-dayIndex="1" class="day"></div>
+      <div data-name="Mittwoch" data-dayIndex="2" class="day"></div>
+      <div data-name="Donnerstag" data-dayIndex="3" class="day"></div>
+      <div data-name="Freitag" data-dayIndex="4" class="day"></div>
+    </section>
+    <form id="eventModal">
+      <h2 id="modalTitle">
+      </h2>
+      <label class="" for="College">Fakultät</label>
+      <div>
+        <input required type="text" id="eventCollege" name="College" class="shortInput"></input>
+      </div>
+      <label class="descriptor" for="title">Titel</label>
+      <div>
+        <input required type="text" id="eventTitle" name="title" class="shortInput"></input>
+      </div>
+      <label class="descriptor" for="date">Datum</label>
+      <div>
+        <input required type="date" id="eventDate" name="date" class="shortInput"></input>
+      </div>
+      <label class="descriptor" for="time">Zeit</label>
+      <div>
+        <input required type="time" id="eventStart" name="time" class="shortInput"></input>
+        ‒<input required type="time" id="eventEnd" name="time" class="shortInput"></input>
+      </div>
+
+      <label for="description">
+        Beschreibung
+      </label>
+      <div>
+        <textarea id="eventDescription" name="description">
+                </textarea>
+      </div>
+      <div id="colors">
+        <input type="button" name="color" value="" class="color color-red" data-color="red"></input>
+        <input type="button" name="color" value="" class="color color-blue" data-color="blue"></input>
+        <input type="button" name="color" value="" class="color color-green" data-color="green"></input>
+        <input type="button" name="color" value="" class="color color-orange" data-color="orange"></input>
+      </div>
+      <div id="eventControls">
+        <input type="submit" value="Submit" class="button" id="submitButton">
+        <input type="button" value="Abbrechen" class="button" id="cancelButton">
+        <input type="button" value="löschen" class="button" id="deleteButton">
+      </div>
+
+      <div id="errors">
+      </div>
+
+    </form>
+  </main>
+  <div class="foot">
+    <div class="legHin">
+      <div>
+        <h1>Legende:</h1>
+        <div>
+          <table>
+            <tbody id="tbody">
+            </tbody>
+          </table>
+        </div>
+        <div class="legInput">
+          <input id="legendeInput" class='legende' placeholder='γ Informations & Medientechnologie'></input>
+          <i id="addLegendeBtn" class="addLegende fas fa-plus" type="button">
+          </i>
+        </div>
+      </div>
+      <div>
+        <h1>Hinweis:</h1>
+        <textarea name="" id="hinweisInput"
+          cols="30" rows="10" placeholder="Hinweis schreiben"></textarea>
+      </div>
+      <div></div>
+    </div>
+  </div>
+  <script src="index.js" type="module"></script>
+  <script src="navigation.js"></script>
+  <script src="../render.js"></script>
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+</body>
+
+</html>

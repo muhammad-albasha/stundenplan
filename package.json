@@ -1,0 +1,85 @@
+{
+  "name": "stundenplan",
+  "version": "1.0.0",
+  "description": "Stundenplan für die Fakultät 720",
+  "main": "./main.js",
+  "scripts": {
+    "pack": "electron-builder --dir",
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.uni-wuppertal.de/it_projekt/stundenplan.git"
+  },
+  "keywords": [],
+  "author": "ITMT",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^23.2.0",
+    "electron-builder": "^24.1.1",
+    "electron-updater": "^5.3.0"
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "build": {
+    "publish": [
+      {
+        "provider": "generic",
+        "url": ""
+      }
+    ],
+    "productName": "Stundenplan",
+    "appId": "stp",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico",
+      "uninstallDisplayName": "Stundenplan",
+      "license": "LICENSE.md",
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Stundenplan",
+      "allowElevation": true,
+      "include": "./build/installer.nsh",
+      "perMachine": false
+    },
+    "linux": {
+      "icon": "icon.icns",
+      "target": [
+        "deb",
+        "snap",
+        "rpm",
+        "AppImage"
+      ],
+      "category": "Utility"
+    },
+    "deb": {
+      "icon": "icon.icns"
+    },
+    "directories": {
+      "buildResources": "resources",
+      "output": "release"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "icon.icns"
+    },
+    "dmg": {
+      "icon": "icon.icns"
+    }
+  },
+  "dependencies": {
+    "jquery": "^3.6.4"
+  }
+}

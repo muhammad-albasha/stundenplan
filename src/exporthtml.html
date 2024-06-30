@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="../icon.ico">
+        <title>Stundenplan</title>
+        <link rel="stylesheet" href="../package/fontawesome/css/all.min.css" />
+        <link rel="stylesheet" href="htmlstyle.css">
+        <script src="Calendar.js" type="module" ></script>
+</head>
+
+<body id="bdy">
+    <div id="mySidenav" class="sidenav">
+        <span class="closebtn" onclick="closeNav()">&#9664;</span>
+        <div id="mySidenSpan">
+            <a href="index.html" style="position: absolute; left: 10px;">Starte Seite </a>
+            <span onclick="windowsClose()" id="close-btn" style="position: absolute; bottom: 10px; left: 25px;">
+                Beenden
+            </span>
+        </div>
+    </div>
+    <div class="title">
+        <header class="header">
+            <span id="nbtn" class="navbtn" onclick="openNav()">&#9776;</span>
+            <h1>Stundenplan</h1>
+            <button class="btn" onclick="downloadHTML()">Speichern</button>
+            <div class="weekControls">
+                <i id="prevWeekBtn" class="fas fa-angle-double-left cursor-pointer"></i>
+                <span id="weekDisplay">
+                    <span id="weekStartDisplay"></span>
+                        ‒
+                    <span id="weekEndDisplay"></span>
+                </span>
+                    <i id="nextWeekBtn" class="fas fa-angle-double-right cursor-pointer"></i>
+            </div>
+        </header>
+
+       
+        <main>
+            <section id="calendar">
+                <div data-name="&bull; Montag" data-dayIndex="0" class="day"></div>
+                <div data-name="&bull; Dienstag" data-dayIndex="1" class="day"></div>   
+                <div data-name="&bull; Mittwoch" data-dayIndex="2" class="day"></div>
+                <div data-name="&bull; Donnerstag" data-dayIndex="3" class="day"></div>
+                <div data-name="&bull; Freitag" data-dayIndex="4" class="day"></div>
+                </section>
+            </main>
+            
+            
+            <script>
+                function downloadHTML() {
+                    var htmlContent = document.getElementById('calendar').outerHTML;
+                    htmlContent = '<style>' +
+                                `:root {
+                                --grid-color: #cecece;
+                                --time-color: #777;
+                                --slot-hover-color: rgba(0, 0, 0, 0.16);
+                                --shadow-color: rgba(0, 0, 0, 0.3);
+                                --font-color: #222;
+                                --color-red: rgb(190, 35, 15);
+                                --color-violett: #6d005e;
+                                --color-darkblue: #1e2b37;
+                                --color-blue: rgb(54, 92, 175);
+                                --color-green: rgb(21, 129, 21);
+                                --color-orange: rgb(233, 153, 4);
+                                --slotHeight: 60px;
+                            }
+
+                            * {
+                                box-sizing: border-box;
+                                margin: 0;
+                                padding: 0;
+                            }
+
+                            body {
+                                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                                color: var(--font-color);
+                                white-space: nowrap;
+                                -webkit-touch-callout: none;
+                                -webkit-user-select: none;
+                                -khtml-user-select: none;
+                                -moz-user-select: none;
+                                -ms-user-select: none;
+                                user-select: none;
+                                white-space: nowrap;
+                            }
+                            body::-webkit-scrollbar {
+                            display: none;
+                            }
+
+                            .title{
+                                position: fixed;
+                                height: 100px;
+                                background-color: var(--color-violett);
+                                width: 100%;
+                                z-index: 5;
+                                -webkit-app-region: drag;
+                            }
+                            .navbtn{
+                                position: absolute;
+                                top: 0;
+                                left: 20px;
+                                font-size:60px;
+                                cursor:pointer;
+                                color: rgb(255, 255, 255);
+                                text-shadow: #1e2b37 1px 1px 5px;
+                                -webkit-app-region: no-drag;
+                            }
+                            .navbtn:hover{
+                                font-weight: bolder;
+                            }
+
+                            .sidenav {
+                                height: 100%;
+                                width: 0;
+                                position: fixed;
+                                z-index: 10;
+                                top: 0;
+                                left: 0;
+                                background-image: linear-gradient(30deg, var(--color-violett) 20%, #5d0051 80%);
+                                overflow-x: hidden;
+                                transition: 0.5s;
+                                padding-top: 10%;
+                            }
+                            
+                            .sidenav span, a{
+                                padding: 8px 8px 8px 32px;
+                                text-decoration: none;
+                                font-size: 25px;
+                                color: white;
+                                display: block;
+                                transition: 0.3s;
+                                cursor: pointer;
+                                white-space: nowrap;
+                            }
+                            
+                            .sidenav span:hover, a:hover{
+                                color: gold;
+                                transform: scale(0.95);
+                            }
+                            
+                            .sidenav .closebtn {
+                                position: absolute;
+                                top: 300px;
+                                right: 0;
+                                font-size: 36px;
+                                color: white;
+                                -webkit-app-region: no-drag;
+                            }
+                            .sidenav .closebtn:hover {
+                                color: gold;
+                            }
+                            .sidenav .closebtn:active {
+                                color:gold;
+                            }
+
+                            .dropdown {
+                                position: relative;
+                                display: inline-block;
+                            }
+                            
+                            /* Dropdown Content (Hidden by Default) */
+                            .dropdown-content {
+                                display: none;
+                                position: absolute;
+                                min-width: 127px;
+                                z-index: 1;
+                                border-radius: 5%;
+                            }
+
+                            .dropdown-content span {
+                                color: white;
+                                font-size: 20px;
+                                padding: 12px 16px;
+                                text-decoration: none;
+                                display: block;
+                                margin-left: 2px;
+                            }
+                            .header {
+                                text-align: center;
+                                padding: 20px 10px;
+                                position: relative;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                height: 100px;
+                                z-index: 5;
+                            }
+
+                            .header h1 {
+                                position: relative;
+                                margin-bottom: 50px;
+                                font-weight: bold;
+                                color: white;
+                                
+                            }
+
+                            .header i {
+                                cursor: pointer;
+                                margin: 0px 5px;
+                                color: white;
+                                transition: all 80ms linear;
+                                border-color: white;
+                            }
+
+                            .header i:hover {
+                                border-color: gray;
+                                font-size: large;
+                                border-radius: 8px;
+                            }
+                            .header i:active {
+                                color: gold;
+                                border-color: gold;
+                                font-size: large;
+                                border-radius: 8px;
+                            }
+
+                            #close-btn:hover{
+                            transform: scale(0.95);
+                            }
+
+
+                            .btn{
+                            padding: 15px 20px;
+                            position: absolute;
+                            text-align: center;
+                            font-size: medium;
+                            color: white;
+                            background: linear-gradient(0deg, #89bb3f 5%, #a9d36a 100%);
+                            border-radius:40px;
+                            width: 150px;
+                            border: none;
+                            cursor: pointer;
+                            font-weight: bold;
+                            margin-left: 350px;
+                            -webkit-app-region: no-drag;
+                            transition: 0.2;
+                            bottom: 25  px;
+                            right: 20px;
+                            }
+                            .btn:hover{
+                            transform: scale(0.95);
+                            }
+                            .btn:active{
+                            background: linear-gradient(0deg, rgb(115, 98, 3) 5%, gold 100%);
+                            }
+
+                            /* controls */
+
+                            .weekControls {
+                                color: white;
+                                margin-top: 40px;
+                                position: absolute;
+                                text-align: center;
+                                font-size: 22px;
+                                -webkit-app-region: no-drag;
+                            }
+
+                            .generalControls {
+                                position: absolute;
+                                right: 20px;
+                            }
+
+                            .generalControls i {
+                                line-height: 25px;
+                                display: inline-block;
+                                width: 30px;
+                                height: 30px;
+                                border: 3px solid #777;
+                                border-radius: 50%;
+                            }
+
+                            div {
+                            color : black;
+                            }
+                            .dayDisplay {
+                            display: flex;
+                            font-size: 20px;
+                            padding: 0px 10px 0px 15px;
+                            color: var(--time-color);
+                            }
+
+                            .columnHeader {
+                            text-align: left;
+                            font-size: 20px;
+                            padding: 10px 0px;
+                            height: 60px;
+                            overflow: hidden;
+                            background-color: white;
+                            color: var(--color-violett);
+                            }
+
+                            .day .columnHeader {
+                            padding: 0px 0px 0px 15px;
+                            display: flex;
+                            height: 60px;
+                            font-size: 20px;
+                            align-items: center;
+                            }
+
+                            .event {
+                            margin-left: 5%;
+                            width: 90%;
+                            font-size: 20px;
+                            padding: 0px 0px 0px 50px;
+                            }`
+                        
+                         + '</style>' + htmlContent;
+
+
+
+                    
+                    var link = document.createElement('a');
+                    link.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(htmlContent));
+                    link.setAttribute('download', 'page.html');
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+                
+                </script>
+        
+        <script src="exportHtml.js" type="module"></script>
+        <script src="../package/jquery-1.12.4.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="Calendar.js" type="module"></script>
+        <script src="navigation.js"></script>
+        <script src="../render.js"></script>
+    </body>
+    
+</html>
